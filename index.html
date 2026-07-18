@@ -833,6 +833,20 @@
        F. JAVASCRIPT LOGIC (ระบบควบคุมการสลับหน้า อัลบั้ม และตัวเช็กความคืบหน้า)
        ========================================================================== -->
   <script>
+    // บล็อกการคลิกขวา (Context Menu)
+    document.addEventListener('contextmenu', event => event.preventDefault());
+
+    // บล็อกปุ่มคีย์ลัดยอดฮิต (F12, Ctrl+Shift+I, Ctrl+Shift+J, Ctrl+U)
+    document.addEventListener('keydown', event => {
+      if (
+        event.key === 'F12' ||
+        (event.ctrlKey && event.shiftKey && (event.key === 'I' || event.key === 'J')) ||
+        (event.ctrlKey && event.key === 'u')
+      ) {
+        event.preventDefault();
+      }
+    });
+
     /* ─── รหัสผ่านปลดล็อกเริ่มต้น (เปลี่ยนได้ตามต้องการครับ) ─── */
     const CORRECT_PASSCODE = "1234"; 
 
