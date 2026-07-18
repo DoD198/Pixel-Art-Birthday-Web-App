@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday, My Love!</title>
+  
+  <!-- ดึงฟอนต์สไตล์ Pixel Art และเพิ่ม 'Chakra Petch' สำหรับภาษาไทยสไตล์เหลี่ยมเรโทร -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;700&family=DotGothic16&family=Press+Start+2P&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       1. GLOBAL STYLES & RESET (การตั้งค่าพื้นฐานของหน้าเว็บ)
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      /* ป้องกันการเลือกข้อความโดยไม่ตั้งใจบนมือถือ */
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: 'Chakra Petch', 'DotGothic16', sans-serif;
+      background-color: #000;
+      color: #3D251D;
+    }
+
+    /* สไตล์หลักสำหรับหัวข้อภาษาอังกฤษ */
+    .pixel-title {
+      font-family: 'Press Start 2P', monospace;
+      line-height: 1.5;
+    }
+
+    /* สไตล์พิเศษสำหรับข้อความภาษาไทยแนว Pixel/Retro */
+    .thai-pixel {
+      font-family: 'Chakra Petch', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    /* ซ่อน Scrollbar ของเบราว์เซอร์ */
+    ::-webkit-scrollbar {
+      display: none;
+    }
+
+    /* ==========================================================================
+       2. REUSABLE PIXEL ART COMPONENTS (สไตล์ส่วนประกอบพิกเซลที่ใช้ซ้ำได้)
+       ========================================================================== */
+    
+    /* กล่องข้อความสไตล์ RPG (Pixel Border) */
+    .pixel-box {
+      background-color: #FFFDF9;
+      border: 4px solid #3D251D;
+      box-shadow: 
+        0 4px 0 #3D251D, 
+        0 -4px 0 #3D251D, 
+        4px 0 0 #3D251D, 
+        -4px 0 0 #3D251D,
+        inset -4px -4px 0 #DDD7CD;
+      position: relative;
+      padding: 20px;
+      image-rendering: pixelated;
+    }
+
+    /* ปุ่มกดสไตล์พิกเซล 3 มิติ */
+    .pixel-btn {
+      display: inline-block;
+      font-family: 'Press Start 2P', 'Chakra Petch', monospace;
+      font-weight: bold;
+      font-size: 14px;
+      color: #FFFDF9;
+      background-color: #FF5A79;
+      border: 4px solid #3D251D;
+      padding: 12px 24px;
+      cursor: pointer;
+      position: relative;
+      outline: none;
+      box-shadow: 
+        0 4px 0 #3D251D,
+        inset -4px -4px 0 #C43B54;
+      text-align: center;
+      transition: transform 0.1s, box-shadow 0.1s;
+    }
+
+    .pixel-btn:active {
+      transform: translateY(4px);
+      box-shadow: 
+        0 0px 0 #3D251D,
+        inset -4px -4px 0 #C43B54;
+    }
+
+    /* ปุ่มสีเหลืองทองแบบพิเศษ */
+    .pixel-btn.gold {
+      background-color: #FFC83B;
+      box-shadow: 
+        0 4px 0 #3D251D,
+        inset -4px -4px 0 #C79A20;
+    }
+    .pixel-btn.gold:active {
+      transform: translateY(4px);
+      box-shadow: 
+        0 0px 0 #3D251D,
+        inset -4px -4px 0 #C79A20;
+    }
+
+    /* โครงสร้างหน้าหลัก (Screens Container) */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.8s ease-in-out;
+      z-index: 10;
+      padding: 20px;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    /* ==========================================================================
+       3. SCREEN 1: COUNTDOWN (หน้าจอนับถอยหลัง)
+       ========================================================================== */
+    #screen-countdown {
+      background-color: #110d1a;
+      z-index: 100;
+    }
+
+    .countdown-number {
+      font-size: 60px;
+      color: #FFC83B;
+      text-shadow: 4px 4px 0px #3D251D;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.9); }
+      50% { transform: scale(1.1); }
+      100% { transform: scale(0.9); }
+    }
+
+    /* ==========================================================================
+       4. SUNSET BACKGROUND & CLOUDS (พื้นหลังท้องฟ้า Sunset และก้อนเมฆ)
+       ========================================================================== */
+    .sunset-bg {
+      background: linear-gradient(to bottom, #4A2E80 0%, #89428E 40%, #FF8E7A 75%, #FFE094 100%);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ก้อนเมฆสไตล์พิกเซลวาดด้วย CSS Shadow */
+    .pixel-cloud {
+      position: absolute;
+      width: 40px;
+      height: 12px;
+      background: rgba(255, 255, 255, 0.4);
+      box-shadow: 
+        12px -8px 0 rgba(255, 255, 255, 0.4),
+        24px -8px 0 rgba(255, 255, 255, 0.4),
+        16px -16px 0 rgba(255, 255, 255, 0.4),
+        28px -16px 0 rgba(255, 255, 255, 0.4),
+        36px -8px 0 rgba(255, 255, 255, 0.4),
+        44px 0px 0 rgba(255, 255, 255, 0.4);
+      top: 20%;
+      left: -100px;
+      animation: floatCloud 30s linear infinite;
+    }
+
+    .pixel-cloud:nth-child(2) {
+      top: 40%;
+      animation-delay: 10s;
+      animation-duration: 45s;
+      transform: scale(1.5);
+    }
+
+    .pixel-cloud:nth-child(3) {
+      top: 15%;
+      animation-delay: 20s;
+      animation-duration: 35s;
+      transform: scale(0.8);
+    }
+
+    @keyframes floatCloud {
+      0% { left: -100px; }
+      100% { left: 105%; }
+    }
+
+    /* ==========================================================================
+       5. SCREEN 2: PASSCODE (หน้าป้อนรหัสผ่านเข้าเว็บ)
+       ========================================================================== */
+    #screen-passcode {
+      z-index: 50;
+    }
+
+    .passcode-container {
+      width: 90%;
+      max-width: 380px;
+      text-align: center;
+      z-index: 5;
+    }
+
+    .passcode-container h2 {
+      font-size: 13px;
+      margin-bottom: 20px;
+      color: #3D251D;
+    }
+
+    /* ช่องใส่รหัสผ่าน */
+    .pixel-input {
+      width: 100%;
+      font-family: 'Press Start 2P', monospace;
+      font-size: 18px;
+      padding: 12px;
+      border: 4px solid #3D251D;
+      background-color: #FFF;
+      text-align: center;
+      outline: none;
+      margin-bottom: 20px;
+      box-shadow: inset 4px 4px 0 #DDD7CD;
+    }
+
+    /* เอฟเฟกต์สั่นเมื่อใส่รหัสผ่านผิด */
+    .shake-anim {
+      animation: shake 0.5s;
+    }
+
+    @keyframes shake {
+      0%, 100% { transform: translateX(0); }
+      20%, 60% { transform: translateX(-10px); }
+      40%, 80% { transform: translateX(10px); }
+    }
+
+    /* ข้อความแจ้งเตือนรหัสผิด */
+    .error-msg {
+      color: #FF5A79;
+      font-size: 11px;
+      margin-bottom: 10px;
+      visibility: hidden;
+      font-family: 'Press Start 2P', monospace;
+    }
+
+    /* ==========================================================================
+       6. SCREEN 3: MAIN GIFT SCREEN (หน้าหลักที่มีจดหมายและกล่องของขวัญ)
+       ========================================================================== */
+    #screen-main {
+      z-index: 30;
+      justify-content: flex-start;
+      padding-top: 30px;
+      overflow-y: auto;
+    }
+
+    .main-header {
+      width: 100%;
+      text-align: center;
+      margin-bottom: 20px;
+      z-index: 5;
+      padding: 0 10px;
+    }
+
+    .main-header h1 {
+      font-size: 14px;
+      color: #FFFDF9;
+      text-shadow: 3px 3px 0px #3D251D;
+      margin-bottom: 8px;
+    }
+
+    .main-header p {
+      font-size: 15px;
+      color: #3D251D;
+      font-weight: bold;
+    }
+
+    /* Grid Layout 2 คอลัมน์กะทัดรัด */
+    .gift-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 15px;
+      width: 90%;
+      max-width: 440px;
+      z-index: 5;
+      margin-bottom: 30px;
+    }
+
+    /* การ์ดไอเทมแต่ละชิ้น */
+    .gift-card {
+      aspect-ratio: 1 / 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: transform 0.2s;
+      padding: 15px 10px;
+    }
+
+    .gift-card:hover {
+      transform: scale(1.05);
+    }
+
+    .gift-card:active {
+      transform: scale(0.95);
+    }
+
+    .gift-card span {
+      font-size: 13px;
+      text-align: center;
+      font-weight: bold;
+      margin-top: 10px;
+      color: #3D251D;
+    }
+
+    /* เครื่องหมายถูกสีทองเพื่อแจ้งว่า "ดูแล้ว" */
+    .checked-badge {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background-color: #FFC83B;
+      color: #3D251D;
+      border: 2px solid #3D251D;
+      font-size: 9px;
+      font-weight: bold;
+      padding: 1px 4px;
+      display: none;
+    }
+
+    /* SVG ไอคอนพิกเซลแบบสเกลคมชัด */
+    .pixel-svg-icon {
+      width: 40px;
+      height: 40px;
+      image-rendering: pixelated;
+    }
+
+    /* ปรับแต่งขนาดกรณีหน้าจอมือถือเล็กมากเป็นพิเศษ */
+    @media (max-width: 360px) {
+      .main-header h1 {
+        font-size: 12px;
+      }
+      .main-header p {
+        font-size: 13px;
+      }
+      .gift-grid {
+        gap: 10px;
+      }
+      .gift-card {
+        padding: 10px 5px;
+      }
+      .gift-card span {
+        font-size: 12px;
+        margin-top: 6px;
+      }
+      .pixel-svg-icon {
+        width: 32px;
+        height: 32px;
+      }
+    }
+
+    /* ==========================================================================
+       7. INTERACTIVE POPUPS (MODALS) (หน้าต่างป๊อปอัปเมื่อเปิดไอเทม)
+       ========================================================================== */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(17, 13, 26, 0.85);
+      z-index: 200;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease-in-out;
+      padding: 15px;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-content {
+      width: 100%;
+      max-width: 380px;
+      max-height: 85vh;
+      overflow-y: auto;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .modal-title {
+      font-size: 11px;
+      margin-bottom: 15px;
+      color: #FF5A79;
+      text-shadow: 1px 1px 0px #3D251D;
+    }
+
+    .modal-body {
+      width: 100%;
+      margin-bottom: 20px;
+      font-size: 16px;
+      line-height: 1.6;
+      color: #3D251D;
+      text-align: left;
+    }
+
+    /* อัลบั้มรูปสไลด์แบบคาร์รูเซล */
+    .carousel-container {
+      position: relative;
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      border: 4px solid #3D251D;
+      background-color: #000;
+      overflow: hidden;
+      margin-bottom: 15px;
+    }
+
+    .carousel-slide {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: none;
+    }
+
+    .carousel-slide.active {
+      display: block;
+    }
+
+    .carousel-btn-container {
+      display: flex;
+      justify-content: space-between;
+      width: 100%;
+      gap: 10px;
+    }
+
+    .carousel-nav-btn {
+      flex: 1;
+      padding: 8px !important;
+      font-size: 12px !important;
+    }
+
+    /* ส่วนเครื่องเล่นเพลงพิกเซล */
+    .music-player-ui {
+      width: 100%;
+      background: #EAE3D2;
+      border: 4px solid #3D251D;
+      padding: 15px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    /* ตัวจำลองแถบคลื่นเสียงวิ่งพิกเซล */
+    .visualizer-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: 35px;
+      gap: 4px;
+      margin-top: 15px;
+    }
+
+    .vis-bar {
+      width: 8px;
+      height: 4px;
+      background-color: #FF5A79;
+      border: 1px solid #3D251D;
+      transition: height 0.1s ease;
+    }
+
+    /* ==========================================================================
+       8. SCREEN 4: ENDING SCREEN (หน้าสุดท้าย ดาวเต็มฟ้าและตัวละครดุ๊กดิ๊ก)
+       ========================================================================== */
+    #screen-ending {
+      z-index: 40;
+    }
+
+    /* ท้องฟ้ายามค่ำคืน */
+    .night-bg {
+      background: linear-gradient(to bottom, #0c0813 0%, #1c132b 50%, #2f1f47 100%);
+      width: 100%;
+      height: 100%;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      overflow: hidden;
+    }
+
+    /* ดาวระยิบระยับ */
+    .pixel-stars {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      background-image: 
+        radial-gradient(2px 2px at 40px 60px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 150px 180px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 280px 120px, #FFC83B, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 90px 300px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(2px 2px at 210px 420px, #FFF, rgba(0,0,0,0)),
+        radial-gradient(3px 3px at 320px 250px, #FF5A79, rgba(0,0,0,0));
+      background-repeat: repeat;
+      background-size: 350px 450px;
+      animation: twinkle 4s infinite ease-in-out;
+      opacity: 0.8;
+    }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    .ending-container {
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+      z-index: 5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* ปรับแต่งส่วนของข้อความปิดท้าย เพื่อแก้ปัญหาความอ่านยากจากตัวสระทับซ้อน */
+    .ending-text {
+      color: #3D251D; /* แก้ไข: เปลี่ยนจากสีเหลืองทองเป็นสีน้ำตาลเข้มเพื่อให้อ่านง่ายบนพื้นหลังครีม */
+      /* แก้ไข: ลบคุณสมบัติ text-shadow ออกทั้งหมด เพื่อแก้ปัญหาเงาหนาที่บังวรรณยุกต์และสระภาษาไทย */
+      font-size: 16px; /* ปรับขนาดให้เข้ากับฟอนต์ไทย Chakra Petch */
+      margin-bottom: 25px;
+      line-height: 1.8;
+    }
+
+    /* บล็อกแสดงตัวละครพิกเซลดุ๊กดิ๊กคู่รัก */
+    .sprites-container {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+      margin-top: 5px;
+      margin-bottom: 15px;
+    }
+
+    /* แอนิเมชันลอยตัวไปมาดุ๊กดิ๊ก */
+    .pixel-sprite {
+      width: 64px;
+      height: 64px;
+      image-rendering: pixelated;
+      animation: floatSprite 2.5s infinite ease-in-out;
+    }
+
+    .pixel-sprite.boy {
+      animation-delay: 0.5s;
+    }
+
+    @keyframes floatSprite {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==========================================================================
+       A. SCREEN 1: COUNTDOWN (หน้าจอถอยหลัง 3 2 1)
+       ========================================================================== -->
+  <div id="screen-countdown" class="screen active">
+    <div id="countdown-num" class="countdown-number pixel-title">3</div>
+  </div>
+
+  <!-- ==========================================================================
+       B. SCREEN 2: PASSCODE (หน้าต่างป้อนรหัสเพื่อปลดล็อก)
+       ========================================================================== -->
+  <div id="screen-passcode" class="screen">
+    <!-- พื้นหลังและก้อนเมฆพาสเทล -->
+    <div class="sunset-bg">
+      <div class="pixel-cloud"></div>
+      <div class="pixel-cloud"></div>
+      <div class="pixel-cloud"></div>
+    </div>
+
+    <div class="passcode-container pixel-box">
+      <h2 class="pixel-title">ENTER OUR PASSCODE</h2>
+      <!-- ช่องป้อนรหัส -->
+      <input type="password" id="passcode-input" class="pixel-input" placeholder="••••" maxlength="4" pattern="[0-9]*" inputmode="numeric">
+      <div id="passcode-error" class="error-msg">WRONG CODE!</div>
+      <button onclick="checkPasscode()" class="pixel-btn gold thai-pixel" style="width: 100%;">ปลดล็อกของขวัญ</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       C. SCREEN 3: MAIN MENU (หน้าหลักที่มีจดหมายและกล่องของขวัญ)
+       ========================================================================== -->
+  <div id="screen-main" class="screen">
+    <!-- พื้นหลังและก้อนเมฆพาสเทลพร้อมแก้อาการจอขาดเรียบร้อย -->
+    <div class="sunset-bg">
+      <div class="pixel-cloud"></div>
+      <div class="pixel-cloud"></div>
+    </div>
+
+    <!-- ส่วนต้อนรับด้านบน -->
+    <div class="main-header">
+      <h1 class="pixel-title">HAPPY BIRTHDAY!</h1>
+      <p class="thai-pixel">เค้าเตรียมของขวัญพิเศษไว้ให้เธอด้วยนะ...</p>
+    </div>
+
+    <!-- ส่วนตารางของขวัญและจดหมาย 2x2 -->
+    <div class="gift-grid">
+      
+      <!-- ชิ้นที่ 1: จดหมาย -->
+      <div class="gift-card pixel-box" onclick="openModal('letter')">
+        <div id="badge-letter" class="checked-badge thai-pixel">อ่านแล้ว</div>
+        <!-- ไอคอนซองจดหมายพิกเซลวาดด้วย SVG -->
+        <svg class="pixel-svg-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M0 2H16V14H0V2ZM2 4V12H14V4L8 8L2 4Z" fill="#FF5A79"/>
+          <path d="M0 2H16V3H0V2ZM0 13H16V14H0V13Z" fill="#3D251D"/>
+          <path d="M0 2H1V14H0V2ZM15 2H16V14H15V2Z" fill="#3D251D"/>
+          <path d="M1 3L8 7.5L15 3V4L8 8.5L1 4V3Z" fill="#3D251D"/>
+        </svg>
+        <span class="thai-pixel">จดหมายลับ</span>
+      </div>
+
+      <!-- ชิ้นที่ 2: อัลบั้มรูปแฟนสุดรัก -->
+      <div class="gift-card pixel-box" onclick="openModal('gallery1')">
+        <div id="badge-gallery1" class="checked-badge thai-pixel">เปิดแล้ว</div>
+        <!-- ไอคอนรูปภาพ/กรอบรูปพิกเซล -->
+        <svg class="pixel-svg-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 1H15V15H1V1Z" fill="#FFC83B"/>
+          <path d="M3 3H13V13H3V3Z" fill="#FFFDF9"/>
+          <path d="M4 11L7 7L9 9L11 6L12 11H4Z" fill="#4A2E80"/>
+          <path d="M0 0H16V16H0V0ZM2 2V14H14V2H2Z" fill="#3D251D"/>
+          <circle cx="10" cy="5" r="1" fill="#FF5A79" />
+        </svg>
+        <span class="thai-pixel">คนดีของเค้า</span>
+      </div>
+
+      <!-- ชิ้นที่ 3: อัลบั้มรูปความทรงจำตอนเล่นเกม -->
+      <div class="gift-card pixel-box" onclick="openModal('gallery2')">
+        <div id="badge-gallery2" class="checked-badge thai-pixel">เปิดแล้ว</div>
+        <!-- ไอคอนจอยสติ๊กเกมส์พิกเซล -->
+        <svg class="pixel-svg-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M1 5H15V12H1V5Z" fill="#89428E"/>
+          <path d="M3 8H6V9H3V8ZM4 7H5V10H4V7Z" fill="#FFFDF9"/>
+          <path d="M10 8H11V9H10V8ZM12 7H13V8H12V7ZM12 9H13V10H12V9Z" fill="#FF5A79"/>
+          <path d="M0 4H16V13H0V4ZM2 6V11H14V6H2Z" fill="#3D251D"/>
+        </svg>
+        <span class="thai-pixel">เกมเมอร์คู่หู</span>
+      </div>
+
+      <!-- ชิ้นที่ 4: เครื่องเล่นเพลง -->
+      <div class="gift-card pixel-box" onclick="openModal('music')">
+        <div id="badge-music" class="checked-badge thai-pixel">ฟังแล้ว</div>
+        <!-- ไอคอนตัวโน๊ตดนตรีพิกเซล -->
+        <svg class="pixel-svg-icon" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M9 2H14V5H9V12C9 13.6569 7.65685 15 6 15C4.34315 15 3 13.6569 3 12C3 10.3431 4.34315 9 6 9C6.7 9 7.4 9.2 8 9.5V2Z" fill="#4A2E80"/>
+          <path d="M8 2H15V6H9V11.5C9 13.4 7.4 15 5.5 15C3.6 15 2 13.4 2 11.5C2 9.6 3.6 8 5.5 8C6.5 8 7.4 8.4 8 9V2ZM10 4V5H13V4H10Z" fill="#3D251D"/>
+        </svg>
+        <span class="thai-pixel">เพลงของเรา</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       D. POPUP MODALS (ส่วนของหน้าจอหน้าต่างเด้งแสดงรายละเอียดไอเทม)
+       ========================================================================== -->
+  
+  <!-- 1. ป๊อปอัป: จดหมายภาษาไทยสไตล์พิกเซล -->
+  <div id="modal-letter" class="modal-overlay">
+    <div class="modal-content pixel-box">
+      <h2 class="modal-title pixel-title">A LETTER FOR YOU</h2>
+      <!-- ─── [จุดที่ 1] แก้ไขข้อความในจดหมายภาษาไทยตรงนี้ได้เลยครับ ─── -->
+      <div class="modal-body thai-pixel" style="font-size: 15px;">
+        <p>ถึงคนเก่งที่สุดในโลกของเค้า,</p>
+        <br>
+        <p>สุขสันต์วันเกิดนะขอบคุณที่เข้ามาเป็นเรื่องราวดีๆ และแสนพิเศษที่สุดในชีวิตเค้าในทุกๆ วัน ขอบคุณสำหรับทุกรอยยิ้ม ความอบอุ่น และการจับมือเดินไปด้วยกันนะ</p>
+        <br>
+        <p>ขอให้วันเกิดปีนี้เธอมีความสุขมากๆ มีแต่เสียงหัวเราะ รอยยิ้มที่สดใส และขอให้ทุกๆ ความฝันของเธอเป็นจริงนะ ไม่ว่าเราจะเติบโตไปทางไหน เค้าจะคอยเป็นกำลังใจและพร้อมซัพพอร์ตเธออยู่ตรงนี้เสมอนะครับ</p>
+        <br>
+        <p>รักเธอที่สุดเลยนะ ❤️</p>
+      </div>
+      <button class="pixel-btn thai-pixel" onclick="closeModal('letter')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- 2. ป๊อปอัป: อัลบั้มรูป My Favorite Girl -->
+  <div id="modal-gallery1" class="modal-overlay">
+    <div class="modal-content pixel-box">
+      <h2 class="modal-title pixel-title">MY FAVORITE GIRL</h2>
+      <div class="modal-body">
+        <!-- สไลด์ภาพแฟนคุณ (แทนที่ลิงก์รูปภาพใน 'src' ด้านล่างได้เลยครับ) -->
+        <div class="carousel-container">
+          <img class="carousel-slide slide-g1 active" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?w=400&q=80" alt="Girl Pic 1">
+          <img class="carousel-slide slide-g1" src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=400&q=80" alt="Girl Pic 2">
+          <img class="carousel-slide slide-g1" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=400&q=80" alt="Girl Pic 3">
+        </div>
+        <div class="carousel-btn-container">
+          <button class="pixel-btn carousel-nav-btn gold thai-pixel" onclick="prevSlide('g1')">&lt; ก่อนหน้า</button>
+          <button class="pixel-btn carousel-nav-btn gold thai-pixel" onclick="nextSlide('g1')">ถัดไป &gt;</button>
+        </div>
+      </div>
+      <button class="pixel-btn thai-pixel" onclick="closeModal('gallery1')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- 3. ป๊อปอัป: รูปความทรงจำการเล่นเกมร่วมกัน -->
+  <div id="modal-gallery2" class="modal-overlay">
+    <div class="modal-content pixel-box">
+      <h2 class="modal-title pixel-title">GAMING MEMORIES</h2>
+      <div class="modal-body">
+        <!-- สไลด์รูปเกี่ยวกับการเล่นเกมคู่รัก (แทนที่ลิงก์รูปภาพจริงของคุณได้ที่นี่ครับ) -->
+        <div class="carousel-container">
+          <img class="carousel-slide slide-g2 active" src="https://images.unsplash.com/photo-1538481199705-c710c4e965fc?w=400&q=80" alt="Game Pic 1">
+          <img class="carousel-slide slide-g2" src="https://images.unsplash.com/photo-1542751371-adc38448a05e?w=400&q=80" alt="Game Pic 2">
+          <img class="carousel-slide slide-g2" src="https://images.unsplash.com/photo-1550745165-9bc0b252726f?w=400&q=80" alt="Game Pic 3">
+        </div>
+        <div class="carousel-btn-container">
+          <button class="pixel-btn carousel-nav-btn gold thai-pixel" onclick="prevSlide('g2')">&lt; ก่อนหน้า</button>
+          <button class="pixel-btn carousel-nav-btn gold thai-pixel" onclick="nextSlide('g2')">ถัดไป &gt;</button>
+        </div>
+      </div>
+      <button class="pixel-btn thai-pixel" onclick="closeModal('gallery2')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- 4. ป๊อปอัป: เครื่องเล่นเพลงพิเศษสำหรับคุณ -->
+  <div id="modal-music" class="modal-overlay">
+    <div class="modal-content pixel-box">
+      <h2 class="modal-title pixel-title">A SONG FOR YOU</h2>
+      <div class="modal-body">
+        
+        <!-- UI ตัวเครื่องเล่นเพลงพิกเซลจำลอง -->
+        <div class="music-player-ui">
+          <div style="font-size: 10px; margin-bottom: 5px; font-family: 'Press Start 2P', monospace;">NOW PLAYING:</div>
+          <div style="font-weight: bold; font-size: 14px; margin-bottom: 10px; color: #4A2E80; font-family: 'Chakra Petch', sans-serif;">เพลงแสนพิเศษสุดโรแมนติก</div>
+          
+          <!-- แอนิเมชันแถบสเปกตรัมขยับขึ้นลง -->
+          <div class="visualizer-container">
+            <div class="vis-bar" id="vbar1"></div>
+            <div class="vis-bar" id="vbar2"></div>
+            <div class="vis-bar" id="vbar3"></div>
+            <div class="vis-bar" id="vbar4"></div>
+            <div class="vis-bar" id="vbar5"></div>
+          </div>
+        </div>
+
+        <!-- แท็กเสียง Audio สำหรับเล่นเพลงจริง (แก้ไข URL เพลงจริงใน src ได้เลยครับ) -->
+        <audio id="hbd-audio" loop>
+          <source src="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3" type="audio/mpeg">
+          Your browser does not support the audio element.
+        </audio>
+
+        <button id="play-pause-btn" class="pixel-btn gold thai-pixel" style="width: 100%;" onclick="togglePlayMusic()">กดเพื่อเล่นเพลง</button>
+
+      </div>
+      <button class="pixel-btn thai-pixel" onclick="closeModal('music')">ย้อนกลับ</button>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       E. SCREEN 5: ENDING SCREEN (หน้าจอบทสรุปอวยพรยามค่ำคืนภาษาไทย)
+       ========================================================================== -->
+  <div id="screen-ending" class="screen">
+    <!-- ท้องฟ้ายามราตรีพร้อมดาวพิกเซลล็อกด้วย position: fixed -->
+    <div class="night-bg">
+      <div class="pixel-stars"></div>
+    </div>
+
+    <div class="ending-container pixel-box">
+      <h1 class="pixel-title" style="font-size: 13px; margin-bottom: 15px; color: #FF5A79; text-shadow: 2px 2px 0 #3D251D;">OUR HAPPY ENDING</h1>
+      <!-- ─── [จุดที่ 2] แก้ไขข้อความในหน้าอวยพรจบภาษาไทยตรงนี้ได้เลยครับ ─── -->
+      <p class="ending-text thai-pixel" style="font-size: 16px;">
+        ขอให้วันเกิดปีนี้ของเธอ<br>
+        มีความสุขที่สุดในโลกเลยนะ!<br><br>
+        ขอให้ทุกๆ วันเต็มไปด้วยรอยยิ้มแสนหวาน<br>
+        และมีความสุขในทุกก้าวเดินตลอดไปนะคนดี
+      </p>
+
+      <!-- ส่วนตัวละครพิกเซลดุ๊กดิ๊กขยับขึ้นลงน่ารักๆ -->
+      <div class="sprites-container">
+        <!-- ตัวละครแฟนสาวพิกเซล -->
+        <svg class="pixel-sprite" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 2H11V11H5V2Z" fill="#FF5A79"/>
+          <path d="M6 1H10V2H6V1Z" fill="#3D251D"/>
+          <path d="M4 3H12V4H4V3ZM4 5H12V8H4V5Z" fill="#3D251D"/>
+          <!-- แก้มแดงและตา -->
+          <rect x="5" y="6" width="1" height="1" fill="#FFF"/>
+          <rect x="10" y="6" width="1" height="1" fill="#FFF"/>
+          <rect x="5" y="7" width="2" height="1" fill="#FF8E7A"/>
+          <rect x="9" y="7" width="2" height="1" fill="#FF8E7A"/>
+          <!-- ชุดเอี๊ยมพิกเซล -->
+          <path d="M4 11H12V14H4V11Z" fill="#4A2E80"/>
+          <path d="M5 14H7V15H5V14ZM9 14H11V15H9V14Z" fill="#3D251D"/>
+        </svg>
+        
+        <!-- ตัวละครหนุ่มพิกเซล -->
+        <svg class="pixel-sprite boy" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 2H11V11H5V2Z" fill="#FFC83B"/>
+          <path d="M5 1H11V3H5V1Z" fill="#3D251D"/>
+          <path d="M4 4H12V5H4V4ZM4 6H12V9H4V6Z" fill="#3D251D"/>
+          <!-- ตา -->
+          <rect x="5" y="7" width="1" height="1" fill="#3D251D"/>
+          <rect x="10" y="7" width="1" height="1" fill="#3D251D"/>
+          <!-- เสื้อผ้าพิกเซล -->
+          <path d="M4 11H12V14H4V11Z" fill="#89428E"/>
+          <path d="M5 14H7V15H5V14ZM9 14H11V15H9V14Z" fill="#3D251D"/>
+        </svg>
+      </div>
+
+      <div class="thai-pixel" style="font-size: 13px; font-weight: bold; color: #89428E; margin-top: 5px;">อยู่ฉลองวันเกิดด้วยกันไปนานๆ นะ ❤️</div>
+    </div>
+  </div>
+
+  <!-- ==========================================================================
+       F. JAVASCRIPT LOGIC (ระบบควบคุมการสลับหน้า อัลบั้ม และตัวเช็กความคืบหน้า)
+       ========================================================================== -->
+  <script>
+    /* ─── รหัสผ่านปลดล็อกเริ่มต้น (เปลี่ยนได้ตามต้องการครับ) ─── */
+    const CORRECT_PASSCODE = "1234"; 
+
+    // ตัวแปรใช้คุมการเช็กสถานะการดูของขวัญว่าดูครบ 4 ชิ้นหรือยัง
+    const openedItems = {
+      letter: false,
+      gallery1: false,
+      gallery2: false,
+      music: false
+    };
+
+    // ตัวแปรเก็บดัชนีของรูปสไลด์ในอัลบั้ม 1 และ 2
+    const carouselIndex = {
+      g1: 0,
+      g2: 0
+    };
+
+    // ลิงก์เก็บตัวจำลองแถบคลื่นเสียงเพื่อทำแอนิเมชันวิ่งแบบสุ่ม
+    let visualizerInterval = null;
+
+    /* ==========================================================
+       ระบบ COUNTDOWN & AUTO-TRANSITION (หน้า 1 ไป หน้า 2)
+       ========================================================== */
+    window.onload = function() {
+      let count = 3;
+      const countdownNumElem = document.getElementById("countdown-num");
+      
+      const interval = setInterval(() => {
+        count--;
+        if (count > 0) {
+          countdownNumElem.innerText = count;
+        } else if (count === 0) {
+          countdownNumElem.innerText = "HAPPY BIRTHDAY!";
+          countdownNumElem.style.fontSize = "24px";
+          countdownNumElem.style.color = "#FF5A79";
+        } else {
+          clearInterval(interval);
+          // สลับเปลี่ยนหน้าไปสู่หน้าล็อครหัสผ่าน
+          switchScreen("screen-countdown", "screen-passcode");
+        }
+      }, 1000);
+    };
+
+    /* ==========================================================
+       ระบบตรวจสอบรหัสผ่าน (หน้า 2 ไป หน้า 3)
+       ========================================================== */
+    function checkPasscode() {
+      const inputVal = document.getElementById("passcode-input").value;
+      const passcodeBox = document.querySelector(".passcode-container");
+      const errorMsg = document.getElementById("passcode-error");
+
+      if (inputVal === CORRECT_PASSCODE) {
+        errorMsg.style.visibility = "hidden";
+        switchScreen("screen-passcode", "screen-main");
+      } else {
+        errorMsg.style.visibility = "visible";
+        passcodeBox.classList.add("shake-anim");
+        setTimeout(() => {
+          passcodeBox.classList.remove("shake-anim");
+        }, 500);
+        document.getElementById("passcode-input").value = "";
+      }
+    }
+
+    document.getElementById("passcode-input").addEventListener("keypress", function(event) {
+      if (event.key === "Enter") {
+        checkPasscode();
+      }
+    });
+
+    /* ==========================================================
+       ระบบเปลี่ยนผ่านสกรีนหลัก (Screen Transition Handler)
+       ========================================================== */
+    function switchScreen(fromId, toId) {
+      const fromScreen = document.getElementById(fromId);
+      const toScreen = document.getElementById(toId);
+      
+      fromScreen.classList.remove("active");
+      
+      setTimeout(() => {
+        toScreen.classList.add("active");
+      }, 350);
+    }
+
+    /* ==========================================================
+       ระบบควบคุมป๊อปอัป Modals & การนับของขวัญที่เปิดดูแล้ว
+       ========================================================== */
+    function openModal(itemId) {
+      const targetModal = document.getElementById(`modal-${itemId}`);
+      if (targetModal) {
+        targetModal.classList.add("active");
+        openedItems[itemId] = true;
+        
+        const badge = document.getElementById(`badge-${itemId}`);
+        if (badge) {
+          badge.style.display = "block";
+        }
+      }
+    }
+
+    function closeModal(itemId) {
+      const targetModal = document.getElementById(`modal-${itemId}`);
+      if (targetModal) {
+        targetModal.classList.remove("active");
+      }
+      checkAllItemsSeen();
+    }
+
+    function checkAllItemsSeen() {
+      const allSeen = Object.values(openedItems).every(status => status === true);
+      
+      if (allSeen) {
+        setTimeout(() => {
+          switchScreen("screen-main", "screen-ending");
+          
+          const audio = document.getElementById("hbd-audio");
+          if (audio && audio.paused) {
+            audio.play().then(() => {
+              startVisualizer();
+              document.getElementById("play-pause-btn").innerText = "หยุดเล่นเพลง";
+            }).catch(e => {
+              console.log("Auto-play blocked by browser. User interactive interaction needed.");
+            });
+          }
+        }, 1200);
+      }
+    }
+
+    /* ==========================================================
+       ระบบสไลด์ภาพในอัลบั้ม (Carousel Controllers)
+       ========================================================== */
+    function showSlide(galleryId, index) {
+      const slides = document.querySelectorAll(`.slide-${galleryId}`);
+      
+      if (index >= slides.length) {
+        carouselIndex[galleryId] = 0;
+      } else if (index < 0) {
+        carouselIndex[galleryId] = slides.length - 1;
+      } else {
+        carouselIndex[galleryId] = index;
+      }
+
+      slides.forEach((slide, idx) => {
+        if (idx === carouselIndex[galleryId]) {
+          slide.classList.add("active");
+        } else {
+          slide.classList.remove("active");
+        }
+      });
+    }
+
+    function nextSlide(galleryId) {
+      showSlide(galleryId, carouselIndex[galleryId] + 1);
+    }
+
+    function prevSlide(galleryId) {
+      showSlide(galleryId, carouselIndex[galleryId] - 1);
+    }
+
+    /* ==========================================================
+       ระบบควบคุมเครื่องเล่นเพลงและแถบความเคลื่อนไหว (Music Player & Visualizer)
+       ========================================================== */
+    function togglePlayMusic() {
+      const audio = document.getElementById("hbd-audio");
+      const playBtn = document.getElementById("play-pause-btn");
+
+      if (audio.paused) {
+        audio.play();
+        playBtn.innerText = "หยุดเล่นเพลง";
+        startVisualizer();
+      } else {
+        audio.pause();
+        playBtn.innerText = "กดเพื่อเล่นเพลง";
+        stopVisualizer();
+      }
+    }
+
+    // แอนิเมชันคลื่นเสียงขยับขึ้นลงจำลองตามจังหวะเล่นเพลง
+    function startVisualizer() {
+      const bars = [
+        document.getElementById("vbar1"),
+        document.getElementById("vbar2"),
+        document.getElementById("vbar3"),
+        document.getElementById("vbar4"),
+        document.getElementById("vbar5")
+      ];
+
+      visualizerInterval = setInterval(() => {
+        bars.forEach(bar => {
+          if (bar) {
+            const randomHeight = Math.floor(Math.random() * 30) + 5;
+            bar.style.height = `${randomHeight}px`;
+          }
+        });
+      }, 150);
+    }
+
+    function stopVisualizer() {
+      clearInterval(visualizerInterval);
+      const bars = [
+        document.getElementById("vbar1"),
+        document.getElementById("vbar2"),
+        document.getElementById("vbar3"),
+        document.getElementById("vbar4"),
+        document.getElementById("vbar5")
+      ];
+      bars.forEach(bar => {
+        if (bar) bar.style.height = "4px";
+      });
+    }
+  </script>
+</body>
+</html>
